@@ -12,8 +12,8 @@ RadioTimeKit is a Swift package to use the TuneIn API. The goal for development 
 ## Contact
 
 * :envelope: [Write me an email](mailto:hello@woodbytes.me)
-* :bird: [Ping us on Twitter](https://twitter.com/_Woodbytes_)
-* :memo: [Read our blog](https://woodbytes.me)
+* :bird: [Ping me on Twitter](https://twitter.com/_Woodbytes_)
+* :memo: [Read my blog](https://woodbytes.me)
 
 ## License
 This software is published under the [MIT License](http://cocoanaut.mit-license.org).
