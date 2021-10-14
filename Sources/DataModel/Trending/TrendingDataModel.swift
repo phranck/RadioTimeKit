@@ -24,12 +24,20 @@
 
 import Foundation
 
-public struct SearchResult: Codable {
-    public var head: ResultHead
-    public var stations: [RadioStation]
+public class TrendingDataModel: ApiDataModel {
 
-    private enum CodingKeys: String, CodingKey {
-        case head
-        case stations = "body"
+    public func showTrendingStations() {
+        let resource = TrendingResource()
+        performRequest(with: resource) { [weak self] result in
+            if let result = result {
+                self?.stations = []
+                for station in result.stations {
+                    DispatchQueue.main.async {
+                        self?.stations.append(station)
+                    }
+                }
+            }
+        }
     }
+
 }

@@ -24,7 +24,7 @@
 
 import Foundation
 
-public struct SearchResult: Codable {
+public struct TrendingResult: Codable {
     public var head: ResultHead
     public var stations: [RadioStation]
 

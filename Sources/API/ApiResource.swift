@@ -32,6 +32,7 @@ public protocol ApiResource {
     var partnerId: String? { get }
     var serialId: String? { get }
     var types: ApiQueryType? { get }
+    var command: ApiQueryCommand? { get }
     var query: String? { get }
 }
 
@@ -63,6 +64,10 @@ extension ApiResource {
             components.queryItems?.append(URLQueryItem(name: "types", value: types.rawValue))
         }
 
+        if let command = command {
+            components.queryItems?.append(URLQueryItem(name: "c", value: command.rawValue))
+        }
+
         if let query = query {
             components.queryItems?.append(URLQueryItem(name: "query", value: query))
         }
@@ -74,6 +79,10 @@ extension ApiResource {
 public enum ApiQueryType: String {
     case link
     case station
+}
+
+public enum ApiQueryCommand: String {
+    case trending
 }
 
 public enum ApiPath: String {

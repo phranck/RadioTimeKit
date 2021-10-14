@@ -24,12 +24,7 @@
 
 import Foundation
 
-public struct SearchResult: Codable {
-    public var head: ResultHead
-    public var stations: [RadioStation]
-
-    private enum CodingKeys: String, CodingKey {
-        case head
-        case stations = "body"
-    }
+public struct ResultHead: Codable {
+    public var title: String
+    public var status: String
 }

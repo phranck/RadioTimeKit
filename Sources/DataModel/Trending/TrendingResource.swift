@@ -24,12 +24,18 @@
 
 import Foundation
 
-public struct SearchResult: Codable {
-    public var head: ResultHead
-    public var stations: [RadioStation]
+struct TrendingResource: ApiResource {
+    typealias ModelType = TrendingResult
 
-    private enum CodingKeys: String, CodingKey {
-        case head
-        case stations = "body"
+    var path: ApiPath {
+        .browse
     }
+    var command: ApiQueryCommand? {
+        .trending
+    }
+
+    var types: ApiQueryType?
+    var partnerId: String?
+    var serialId: String?
+    var query: String?
 }
