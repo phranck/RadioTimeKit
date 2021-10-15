@@ -24,22 +24,12 @@
 
 import Foundation
 
-public class LocalDataModel: ApiDataModel {
+public struct BrowseTrendingResult: Codable {
+    public var head: ResultHead
+    public var stations: [RadioStation]
 
-    public func showStations() {
-        let resource = LocalResource()
-        performRequest(with: resource) { [weak self] result in
-            if let result = result {
-                self?.stations = []
-                for broadcastType in result.payload {
-                    for station in broadcastType.stations {
-                        DispatchQueue.main.async {
-                            self?.stations.append(station)
-                        }
-                    }
-                }
-            }
-        }
+    private enum CodingKeys: String, CodingKey {
+        case head
+        case stations = "body"
     }
-
 }

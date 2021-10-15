@@ -24,14 +24,14 @@
 
 import Foundation
 
-struct LocalResource: ApiResource {
-    typealias ModelType = LocalResult
+struct BrowseTrendingResource: ApiResource {
+    typealias ModelType = BrowseTrendingResult
 
     var path: ApiPath {
         .browse
     }
-    var command: ApiQueryCommand? {
-        .local
+    var category: ApiQueryCategory? {
+        .trending
     }
 
     var types: ApiQueryType?
