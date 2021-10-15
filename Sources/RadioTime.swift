@@ -25,7 +25,7 @@
 import Foundation
 
 public struct RadioTime {
-    public static let version = "0.1.0"
+    public static let version = "0.1.1"
     public static let build = 1
 
     public static let apiScheme = "https"
