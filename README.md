@@ -1,4 +1,6 @@
 [![RadioTimeKit CI](https://github.com/phranck/RadioTimeKit/actions/workflows/RadioTimeKit.yml/badge.svg)](https://github.com/phranck/RadioTimeKit/actions/workflows/RadioTimeKit.yml)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+![Tag](https://img.shields.io/github/tag/phranck/RadioTimeKit.svg?color=blue&label=Release)
 
 <div align="center"><img src="RadioTimeBanner.svg" width="100%" /></div>
 
