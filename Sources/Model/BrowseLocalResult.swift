@@ -24,20 +24,24 @@
 
 import Foundation
 
-public class TrendingDataModel: ApiDataModel {
+public struct BrowseLocalResult: Codable {
+    public var head: ResultHead
+    public var payload: [LocalResultBroadcastType]
 
-    public func showStations() {
-        let resource = TrendingResource()
-        performRequest(with: resource) { [weak self] result in
-            if let result = result {
-                self?.stations = []
-                for station in result.stations {
-                    DispatchQueue.main.async {
-                        self?.stations.append(station)
-                    }
-                }
-            }
-        }
+    private enum CodingKeys: String, CodingKey {
+        case head
+        case payload = "body"
     }
+}
 
+public struct LocalResultBroadcastType: Codable {
+    public var element: String
+    public var text: String
+    public var stations: [RadioStation]
+
+    private enum CodingKeys: String, CodingKey {
+        case element
+        case text
+        case stations = "children"
+    }
 }

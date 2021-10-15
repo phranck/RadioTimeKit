@@ -24,24 +24,18 @@
 
 import Foundation
 
-public struct LocalResult: Codable {
-    public var head: ResultHead
-    public var payload: [LocalResultBroadcastType]
+struct BrowseLocalResource: ApiResource {
+    typealias ModelType = BrowseLocalResult
 
-    private enum CodingKeys: String, CodingKey {
-        case head
-        case payload = "body"
+    var path: ApiPath {
+        .browse
     }
-}
-
-public struct LocalResultBroadcastType: Codable {
-    public var element: String
-    public var text: String
-    public var stations: [RadioStation]
-
-    private enum CodingKeys: String, CodingKey {
-        case element
-        case text
-        case stations = "children"
+    var category: ApiQueryCategory? {
+        .local
     }
+
+    var types: ApiQueryType?
+    var partnerId: String?
+    var serialId: String?
+    var query: String?
 }
