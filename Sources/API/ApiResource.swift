@@ -82,7 +82,7 @@ public enum ApiQueryType: String {
 }
 
 public enum ApiQueryCommand: String {
-    case trending
+    case trending, local, music, talk
 }
 
 public enum ApiPath: String {

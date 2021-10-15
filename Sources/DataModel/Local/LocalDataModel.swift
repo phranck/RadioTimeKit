@@ -24,16 +24,18 @@
 
 import Foundation
 
-public class TrendingDataModel: ApiDataModel {
+public class LocalDataModel: ApiDataModel {
 
     public func showStations() {
-        let resource = TrendingResource()
+        let resource = LocalResource()
         performRequest(with: resource) { [weak self] result in
             if let result = result {
                 self?.stations = []
-                for station in result.stations {
-                    DispatchQueue.main.async {
-                        self?.stations.append(station)
+                for broadcastType in result.payload {
+                    for station in broadcastType.stations {
+                        DispatchQueue.main.async {
+                            self?.stations.append(station)
+                        }
                     }
                 }
             }
