@@ -6,6 +6,27 @@
 
 RadioTimeKit is a Swift package to use the TuneIn API. The goal for development was to have a Swift SDK to get convenient access to TuneIn's browsing and tuning API.
 
+## Installation
+`RadioTimeKit.git` works with Swift 5.3 and above for iOS and macOS (currently).
+
+### Swift Package Manager
+
+```Swift
+let package = Package(
+  name: "MyPackage",
+  dependencies: [
+    .package(url: "https://github.com/phranck/RadioTimeKit.git", from: "0.1.0"),
+  ]
+)
+```
+
+### Carthage
+Put this in your `Cartfile`:
+
+```
+github "phranck/RadioTimeKit" ~> 0.1
+```
+
 ## Developer Notes
 `RadioTimeKit` uses [GitFlow](http://githubflow.github.io). There are two branches, `main` and `develop`. The `develop` branch is the default branch. To provide (*changes*|*fixes*|*additions*) you just have to fork this repository and create your working branch with `develop` as base. If you’re done, just open a pull request.
 
