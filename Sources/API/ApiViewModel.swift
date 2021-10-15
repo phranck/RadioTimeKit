@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class ApiDataModel: ObservableObject {
+public class ApiViewModel: ObservableObject {
     @Published public internal(set) var stations: [RadioStation] = []
     @Published public internal(set) var error: RadioTimeError = .none
 

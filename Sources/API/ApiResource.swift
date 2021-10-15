@@ -29,7 +29,6 @@ public protocol ApiResource {
     associatedtype ModelType: Decodable
 
     var path: ApiPath { get }
-    var partnerId: String? { get }
     var serialId: String? { get }
     var types: ApiQueryType? { get }
     var category: ApiQueryCategory? { get }
@@ -57,7 +56,7 @@ extension ApiResource {
             components.queryItems?.append(URLQueryItem(name: "locale", value: languageCode))
         }
 
-        if let partnerId = partnerId {
+        if let partnerId = RadioTime.partnerId {
             components.queryItems?.append(URLQueryItem(name: "partnerId", value: partnerId))
         }
 

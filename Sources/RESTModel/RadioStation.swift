@@ -80,6 +80,16 @@ public class RadioStation: Decodable, Identifiable {
         case type
     }
 
+    public init(title: String, subTitle: String, coverUrlString: String, streamUrlString: String, type: String = "audio", bitrate: String = "192", formats: String = "mp3") {
+        self.title = title
+        self.subTitle = subTitle
+        self.coverUrlString = streamUrlString
+        self.streamUrlString = streamUrlString
+        self.type = type
+        self.bitrate = bitrate
+        self.formats = formats
+    }
+
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

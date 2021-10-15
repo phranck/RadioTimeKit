@@ -24,16 +24,18 @@
 
 import Foundation
 
-public class BrowseTrendingDataModel: ApiDataModel {
+public class BrowseLocalViewModel: ApiViewModel {
 
     public func showStations() {
-        let resource = BrowseTrendingResource()
+        let resource = BrowseLocalResource()
         performRequest(with: resource) { [weak self] result in
             if let result = result {
                 self?.stations = []
-                for station in result.stations {
-                    DispatchQueue.main.async {
-                        self?.stations.append(station)
+                for broadcastType in result.payload {
+                    for station in broadcastType.stations {
+                        DispatchQueue.main.async {
+                            self?.stations.append(station)
+                        }
                     }
                 }
             }

@@ -24,22 +24,24 @@
 
 import Foundation
 
-public class BrowseLocalDataModel: ApiDataModel {
+public class SearchViewModel: ApiViewModel {
+    @Published public private(set) var isLoading: Bool = false
 
-    public func showStations() {
-        let resource = BrowseLocalResource()
+    public func search(matching query: String) {
+        var resource = SearchResource()
+        resource.query = query
+
+        isLoading = true
         performRequest(with: resource) { [weak self] result in
             if let result = result {
                 self?.stations = []
-                for broadcastType in result.payload {
-                    for station in broadcastType.stations {
-                        DispatchQueue.main.async {
-                            self?.stations.append(station)
-                        }
+                for station in result.stations {
+                    DispatchQueue.main.async {
+                        self?.stations.append(station)
                     }
                 }
             }
+            self?.isLoading = true
         }
     }
-
 }

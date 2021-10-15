@@ -24,14 +24,10 @@
 
 import Foundation
 
-public class SearchDataModel: ApiDataModel {
-    @Published public private(set) var isLoading: Bool = false
+public class BrowseTrendingViewModel: ApiViewModel {
 
-    public func search(matching query: String) {
-        var resource = SearchResource()
-        resource.query = query
-
-        isLoading = true
+    public func showStations() {
+        let resource = BrowseTrendingResource()
         performRequest(with: resource) { [weak self] result in
             if let result = result {
                 self?.stations = []
@@ -41,7 +37,7 @@ public class SearchDataModel: ApiDataModel {
                     }
                 }
             }
-            self?.isLoading = true
         }
     }
+
 }
