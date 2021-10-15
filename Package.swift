@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "RadioTimeKit", targets: ["RadioTimeKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/sindresorhus/Regex.git", from: "1.0.0")
+        .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0")
     ],
     targets: [
         .target(
