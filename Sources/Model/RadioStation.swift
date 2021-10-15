@@ -23,6 +23,7 @@
  */
 
 import Foundation
+import Regex
 
 public class RadioStation: Decodable, Identifiable {
     public var title: String
@@ -82,6 +83,9 @@ public class RadioStation: Decodable, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         title = try container.decode(String.self, forKey: .title)
+            .replacingFirstMatch(of: "(.+) (\\d{1,3}\\.\\d{1}) (\\(.+\\))", with: "$1")
+            .replacingFirstMatch(of: "(.+) (\\(.+\\))", with: "$1")
+
         subTitle = try container.decodeIfPresent(String.self, forKey: .subTitle)
         coverUrlString = try container.decodeIfPresent(String.self, forKey: .coverUrlString)
         streamUrlString = try container.decode(String.self, forKey: .streamUrlString)
