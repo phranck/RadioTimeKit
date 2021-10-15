@@ -32,7 +32,7 @@ public protocol ApiResource {
     var partnerId: String? { get }
     var serialId: String? { get }
     var types: ApiQueryType? { get }
-    var command: ApiQueryCommand? { get }
+    var category: ApiQueryCategory? { get }
     var query: String? { get }
 }
 
@@ -50,7 +50,12 @@ extension ApiResource {
         components.path = "/\(path.rawValue).ashx"
         components.queryItems = [
             URLQueryItem(name: "render", value: "json"),
+            URLQueryItem(name: "formats", value: "mp3,aac,wma,wmpro,wmvoice,ogg,qt"),
         ]
+
+        if let languageCode = Locale.current.languageCode {
+            components.queryItems?.append(URLQueryItem(name: "locale", value: languageCode))
+        }
 
         if let partnerId = partnerId {
             components.queryItems?.append(URLQueryItem(name: "partnerId", value: partnerId))
@@ -64,8 +69,8 @@ extension ApiResource {
             components.queryItems?.append(URLQueryItem(name: "types", value: types.rawValue))
         }
 
-        if let command = command {
-            components.queryItems?.append(URLQueryItem(name: "c", value: command.rawValue))
+        if let category = category {
+            components.queryItems?.append(URLQueryItem(name: "c", value: category.rawValue))
         }
 
         if let query = query {
@@ -81,8 +86,8 @@ public enum ApiQueryType: String {
     case station
 }
 
-public enum ApiQueryCommand: String {
-    case trending, local, music, talk
+public enum ApiQueryCategory: String {
+    case local, music, podcast, talk, sports, trending
 }
 
 public enum ApiPath: String {
