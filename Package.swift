@@ -13,11 +13,12 @@ let package = Package(
         .library(name: "RadioTimeKit", targets: ["RadioTimeKit"])
     ],
     dependencies: [
+        .package(url: "https://github.com/sindresorhus/Regex", from: "1.0.0")
     ],
     targets: [
         .target(
             name: "RadioTimeKit",
-            dependencies: [],
+            dependencies: ["Regex"],
             path: "Sources"
         ),
         .testTarget(
