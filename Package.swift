@@ -14,15 +14,15 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0"),
-        .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.17.0")
+        .package(name: "Realm", url: "https://github.com/realm/realm-cocoa.git", from: "10.17.0")
     ],
     targets: [
         .target(
             name: "RadioTimeKit",
             dependencies: [
                 "Regex",
-                .product(name: "Realm", package: "realm-cocoa"),
-                .product(name: "RealmSwift", package: "realm-cocoa")
+                .product(name: "Realm", package: "Realm"),
+                .product(name: "RealmSwift", package: "Realm")
             ],
             path: "Sources"
         ),
