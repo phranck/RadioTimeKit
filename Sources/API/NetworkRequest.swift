@@ -35,39 +35,40 @@ extension NetworkRequest {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.timeoutInterval = 10
-        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        request.cachePolicy = .returnCacheDataElseLoad
 
-        print(request)
+//        print(request)
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error -> Void in
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(.failure(RadioTimeError.undefined(error: error)))
+        DispatchQueue.global().async {
+            let task = URLSession.shared.dataTask(with: request) { data, response, error -> Void in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(RadioTimeError.undefined(error: error)))
+                    }
+                    return
                 }
-                return
+
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(RadioTimeError.invalidResponseData))
+                    }
+                    return
+                }
+
+                self.decode(data, withCompletion: { result in
+                    switch result {
+                        case .success(let result):
+                            DispatchQueue.main.async {
+                                completion(.success(result))
+                            }
+                        case .failure(let error):
+                            DispatchQueue.main.async {
+                                completion(.failure(RadioTimeError.jsonDecodingError(error: error)))
+                            }
+                    }
+                })
             }
-
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    completion(.failure(RadioTimeError.invalidResponseData))
-                }
-                return
-            }
-
-            self.decode(data, withCompletion: { result in
-                switch result {
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            completion(.failure(RadioTimeError.jsonDecodingError(error: error)))
-                        }
-                    case .success(let result):
-                        DispatchQueue.main.async {
-                            completion(.success(result))
-                        }
-                }
-            })
-
+            task.resume()
         }
-        task.resume()
     }
 }

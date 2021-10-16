@@ -25,7 +25,7 @@
 import Foundation
 
 public struct BrowseLocalResult: Codable {
-    public var head: ResultHead
+    public var head: HeadResult
     public var payload: [LocalResultBroadcastType]
 
     private enum CodingKeys: String, CodingKey {

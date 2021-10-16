@@ -25,6 +25,7 @@
 import Foundation
 
 public class BrowseTrendingViewModel: ApiViewModel {
+    let stationDetailModel = DescribeViewModel()
 
     public func showStations() {
         let resource = BrowseTrendingResource()
@@ -32,9 +33,20 @@ public class BrowseTrendingViewModel: ApiViewModel {
             if let result = result {
                 self?.stations = []
                 for station in result.stations {
-                    DispatchQueue.main.async {
-                        self?.stations.append(station)
-                    }
+                    self?.stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
+                        guard let stationDetails = stationDetails else {
+                            DispatchQueue.main.async {
+                                self?.stations.append(station)
+                            }
+                            return
+                        }
+
+                        station.details = stationDetails.details.first
+
+                        DispatchQueue.main.async {
+                            self?.stations.append(station)
+                        }
+                    })
                 }
             }
         }

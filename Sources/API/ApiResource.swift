@@ -28,6 +28,7 @@ import SwiftUI
 public protocol ApiResource {
     associatedtype ModelType: Decodable
 
+    var id: String? { get }
     var path: ApiPath { get }
     var serialId: String? { get }
     var types: ApiQueryType? { get }
@@ -52,8 +53,12 @@ extension ApiResource {
             URLQueryItem(name: "formats", value: "mp3,aac,wma,wmpro,wmvoice,ogg,qt"),
         ]
 
-        if let languageCode = Locale.current.languageCode {
-            components.queryItems?.append(URLQueryItem(name: "locale", value: languageCode))
+        if let id = id {
+            components.queryItems?.append(URLQueryItem(name: "id", value: id))
+        }
+
+        if let regionCode = Locale.current.regionCode {
+            components.queryItems?.append(URLQueryItem(name: "locale", value: regionCode.lowercased()))
         }
 
         if let partnerId = RadioTime.partnerId {

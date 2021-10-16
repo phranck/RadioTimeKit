@@ -13,12 +13,17 @@ let package = Package(
         .library(name: "RadioTimeKit", targets: ["RadioTimeKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0")
+        .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0"),
+        .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.17.0")
     ],
     targets: [
         .target(
             name: "RadioTimeKit",
-            dependencies: ["Regex"],
+            dependencies: [
+                "Regex",
+                .product(name: "Realm", package: "realm-cocoa"),
+                .product(name: "RealmSwift", package: "realm-cocoa")
+            ],
             path: "Sources"
         ),
         .testTarget(

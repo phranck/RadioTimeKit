@@ -34,6 +34,7 @@ struct BrowseLocalResource: ApiResource {
         .local
     }
 
+    var id: String?
     var types: ApiQueryType?
     var partnerId: String?
     var serialId: String?

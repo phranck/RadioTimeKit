@@ -25,7 +25,7 @@
 import Foundation
 
 public struct SearchResult: Codable {
-    public var head: ResultHead
+    public var head: HeadResult
     public var stations: [RadioStation]
 
     private enum CodingKeys: String, CodingKey {

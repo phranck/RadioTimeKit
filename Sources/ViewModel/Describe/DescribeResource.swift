@@ -24,25 +24,17 @@
 
 import Foundation
 
-public class ApiViewModel: ObservableObject {
-    @Published public internal(set) var stations: [RadioStation] = []
-    @Published public internal(set) var error: RadioTimeError = .none
+struct DescribeResource: ApiResource {
+    typealias ModelType = DescribeResult
 
-    public init() {}
-
-    internal func performRequest<Resource: ApiResource>(with resource: Resource, withCompletion completion: @escaping (Resource.ModelType?) -> Void) {
-        let request = ApiRequest(resource: resource)
-        request.execute { [weak self] result in
-            switch result {
-                case let .success(result):
-                    completion(result)
-
-                case .failure(let error):
-                    print(error)
-                    completion(nil)
-                    self?.error = error
-                    break
-            }
-        }
+    var path: ApiPath {
+        .describe
     }
+
+    var id: String?
+    var types: ApiQueryType?
+    var partnerId: String?
+    var serialId: String?
+    var category: ApiQueryCategory?
+    var query: String?
 }

@@ -34,6 +34,7 @@ struct BrowseTrendingResource: ApiResource {
         .trending
     }
 
+    var id: String?
     var types: ApiQueryType?
     var partnerId: String?
     var serialId: String?

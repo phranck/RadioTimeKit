@@ -33,9 +33,21 @@ public class BrowseLocalViewModel: ApiViewModel {
                 self?.stations = []
                 for broadcastType in result.payload {
                     for station in broadcastType.stations {
-                        DispatchQueue.main.async {
-                            self?.stations.append(station)
-                        }
+                        let stationDetailModel = DescribeViewModel()
+                        stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
+                            guard let stationDetails = stationDetails else {
+                                DispatchQueue.main.async {
+                                    self?.stations.append(station)
+                                }
+                                return
+                            }
+
+                            station.details = stationDetails.details.first
+
+                            DispatchQueue.main.async {
+                                self?.stations.append(station)
+                            }
+                        })
                     }
                 }
             }

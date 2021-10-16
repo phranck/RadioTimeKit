@@ -24,25 +24,12 @@
 
 import Foundation
 
-public class ApiViewModel: ObservableObject {
-    @Published public internal(set) var stations: [RadioStation] = []
-    @Published public internal(set) var error: RadioTimeError = .none
+public struct DescribeResult: Codable {
+    public var head: HeadResult
+    public var details: [RadioStationDetail]
 
-    public init() {}
-
-    internal func performRequest<Resource: ApiResource>(with resource: Resource, withCompletion completion: @escaping (Resource.ModelType?) -> Void) {
-        let request = ApiRequest(resource: resource)
-        request.execute { [weak self] result in
-            switch result {
-                case let .success(result):
-                    completion(result)
-
-                case .failure(let error):
-                    print(error)
-                    completion(nil)
-                    self?.error = error
-                    break
-            }
-        }
+    private enum CodingKeys: String, CodingKey {
+        case head
+        case details = "body"
     }
 }

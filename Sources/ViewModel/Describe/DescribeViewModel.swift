@@ -24,7 +24,17 @@
 
 import Foundation
 
-public struct ResultHead: Codable {
-    public var title: String
-    public var status: String
+public class DescribeViewModel: ApiViewModel {
+
+    func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {
+        var resource = DescribeResource()
+        resource.id = station.id
+
+        performRequest(with: resource) { result in
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+    }
+
 }

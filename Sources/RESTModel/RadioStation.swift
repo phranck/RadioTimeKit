@@ -27,6 +27,7 @@ import Regex
 //import Regex
 
 public class RadioStation: Decodable, Identifiable {
+    public var id: String { presetId }
     public var title: String
     public var subTitle: String?
 
@@ -56,12 +57,13 @@ public class RadioStation: Decodable, Identifiable {
     public var nowPlayingId: String?
 
     public var genreId: String?
-    public var presetId: String?
+    public var presetId: String
     public var guideId: String?
     public var bitrate: String?
     public var item: String?
     public var formats: String?
     public var type: String
+    public var details: RadioStationDetail?
 
     private enum CodingKeys: String, CodingKey {
         case title = "text"
@@ -80,7 +82,7 @@ public class RadioStation: Decodable, Identifiable {
         case type
     }
 
-    public init(title: String, subTitle: String, coverUrlString: String, streamUrlString: String, type: String = "audio", bitrate: String = "192", formats: String = "mp3") {
+    public init(title: String, subTitle: String, coverUrlString: String, streamUrlString: String, type: String = "audio", bitrate: String = "192", formats: String = "mp3", presetId: String = "s20407") {
         self.title = title
         self.subTitle = subTitle
         self.coverUrlString = streamUrlString
@@ -88,6 +90,7 @@ public class RadioStation: Decodable, Identifiable {
         self.type = type
         self.bitrate = bitrate
         self.formats = formats
+        self.presetId = presetId
     }
 
     required public init(from decoder: Decoder) throws {
@@ -104,7 +107,7 @@ public class RadioStation: Decodable, Identifiable {
         nowPlayingImageUrlString = try container.decodeIfPresent(String.self, forKey: .nowPlayingImageUrlString)
         nowPlayingId = try container.decodeIfPresent(String.self, forKey: .nowPlayingId)
         genreId = try container.decodeIfPresent(String.self, forKey: .genreId)
-        presetId = try container.decodeIfPresent(String.self, forKey: .presetId)
+        presetId = try container.decode(String.self, forKey: .presetId)
         guideId = try container.decodeIfPresent(String.self, forKey: .guideId)
         bitrate = try container.decodeIfPresent(String.self, forKey: .bitrate)
         item = try container.decodeIfPresent(String.self, forKey: .item)
@@ -125,7 +128,7 @@ extension RadioStation: Encodable {
         try container.encodeIfPresent(nowPlayingImageUrlString, forKey: .nowPlayingImageUrlString)
         try container.encodeIfPresent(nowPlayingId, forKey: .nowPlayingId)
         try container.encodeIfPresent(genreId, forKey: .genreId)
-        try container.encodeIfPresent(presetId, forKey: .presetId)
+        try container.encode(presetId, forKey: .presetId)
         try container.encodeIfPresent(guideId, forKey: .guideId)
         try container.encodeIfPresent(bitrate, forKey: .bitrate)
         try container.encodeIfPresent(item, forKey: .item)
@@ -136,12 +139,12 @@ extension RadioStation: Encodable {
 
 extension RadioStation: Equatable {
     public static func == (lhs: RadioStation, rhs: RadioStation) -> Bool {
-        return lhs.presetId == rhs.presetId
+        return lhs.id == rhs.id
     }
 }
 
 extension RadioStation: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(presetId)
+        hasher.combine(id)
     }
 }

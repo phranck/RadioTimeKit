@@ -35,6 +35,7 @@ struct SearchResource: ApiResource {
         .station
     }
 
+    var id: String?
     var partnerId: String?
     var serialId: String?
     var category: ApiQueryCategory?
