@@ -25,11 +25,8 @@
 import Foundation
 
 struct BrowseTrendingResource: ApiResource {
-    typealias ModelType = BrowseTrendingResult
+    typealias ModelType = Response
 
-    var path: ApiPath {
-        .browse
-    }
     var category: ApiStationsCategory? {
         .trending
     }

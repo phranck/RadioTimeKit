@@ -24,12 +24,9 @@
 
 import Foundation
 
-public struct BrowseTrendingResult: Codable {
-    public var head: HeadResult
-    public var stations: [RadioStation]
+public typealias Children = [Outline]
 
-    private enum CodingKeys: String, CodingKey {
-        case head
-        case stations = "body"
-    }
+public struct Response: Codable {
+    var head: Head
+    var body: Children
 }

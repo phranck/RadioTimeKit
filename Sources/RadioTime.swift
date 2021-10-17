@@ -26,22 +26,22 @@ import CloudUserDefaults
 import SwiftUI
 
 public class RadioTime: ObservableObject {
-    public static let version = "0.1.1"
+    public static let version = "0.1.2"
     public static let build = 1
 
     public static var partnerId: String?
-    public static var favoritesStorage: RadioTimeFavoritesStorage = .userDefaults
+    public static var favoritesStorage: RadioTimeFavoritesStorage = .iCloud
 
     private let cloudUserDefaults = CloudUserDefaults()
     private static let cloudPrefix = "playable"
 
-    @Published public internal(set) var stations: [RadioStation] = []
-    @Published public internal(set) var favorites: [RadioStation] = []
+    @Published public internal(set) var stations: Children = []
+    @Published public internal(set) var favorites: Children = []
     @Published public internal(set) var error: RadioTimeError = .none
     @Published public internal(set) var isLoading: Bool = false
 
     @AppStorage("\(favoritesStorage == .iCloud ? "\(cloudPrefix)_" : "")favorites")
-    private var cloudfavorites: Set<RadioStation> = []
+    private var cloudfavorites: Set<Outline> = []
 
     @AppStorage("\(cloudPrefix)_initialStationsCategory")
     public static var initialStationsCategory: ApiStationsCategory = .trending
@@ -73,14 +73,14 @@ public class RadioTime: ObservableObject {
         }
     }
 
-    public func addToFavorites(station: RadioStation) {
+    public func addToFavorites(station: Outline) {
         DispatchQueue.main.async {
             self.cloudfavorites.insert(station)
             self.favorites.append(station)
         }
     }
 
-    public func removeFromFavorites(station: RadioStation) {
+    public func removeFromFavorites(station: Outline) {
         DispatchQueue.main.async {
             self.cloudfavorites.remove(station)
             if let index = self.favorites.firstIndex(of: station) {
@@ -93,7 +93,7 @@ public class RadioTime: ObservableObject {
 
     @objc internal func cloudUpdate(notification: NSNotification) {
         if let dict: [String: Any] = notification.object as? [String: Any],
-           let favorites = Array<RadioStation>(rawValue: dict.description) {
+           let favorites = Array<Outline>(rawValue: dict.description) {
 
             print("Received Cloud Favorites: \(favorites)")
             DispatchQueue.main.async {

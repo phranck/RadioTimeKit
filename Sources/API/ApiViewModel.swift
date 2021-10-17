@@ -26,7 +26,7 @@ import Foundation
 
 internal protocol ApiFetchable {
     func fetchStations()
-    func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void)
+    func fetchDetails(for station: Outline, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void)
 }
 
 public class ApiViewModel: ObservableObject, ApiFetchable {
@@ -55,5 +55,5 @@ public class ApiViewModel: ObservableObject, ApiFetchable {
     // MARK: - ApiFetchable
 
     func fetchStations() {}
-    func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {}
+    func fetchDetails(for station: Outline, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {}
 }

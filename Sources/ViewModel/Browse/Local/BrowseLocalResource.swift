@@ -25,11 +25,8 @@
 import Foundation
 
 struct BrowseLocalResource: ApiResource {
-    typealias ModelType = BrowseLocalResult
+    typealias ModelType = Response
 
-    var path: ApiPath {
-        .browse
-    }
     var category: ApiStationsCategory? {
         .local
     }

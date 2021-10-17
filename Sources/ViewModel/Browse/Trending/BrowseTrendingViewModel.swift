@@ -34,7 +34,7 @@ internal class BrowseTrendingViewModel: ApiViewModel {
             if let result = result {
                 self.api.stations = []
 
-                for station in result.stations {
+                for station in result.body {
                     stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
                         guard let stationDetails = stationDetails else {
                             DispatchQueue.main.async {
@@ -43,7 +43,7 @@ internal class BrowseTrendingViewModel: ApiViewModel {
                             return
                         }
 
-                        station.details = stationDetails.details.first
+                        station.details = stationDetails.body.first
 
                         DispatchQueue.main.async {
                             self.api.stations.append(station)

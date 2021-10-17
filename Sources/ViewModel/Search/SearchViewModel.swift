@@ -33,7 +33,7 @@ internal class SearchViewModel: ApiViewModel {
         performRequest(with: resource) { [weak self] result in
             if let result = result {
                 self?.api.stations = []
-                for station in result.stations {
+                for station in result.body {
                     DispatchQueue.main.async {
                         self?.api.stations.append(station)
                     }

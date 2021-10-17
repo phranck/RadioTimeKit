@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class RadioStationDetail: Decodable, Identifiable {
+public class Station: Decodable, Identifiable {
     public var id: String { presetId }
     public var presetId: String = ""
     public var name: String = ""
@@ -113,7 +113,7 @@ public class RadioStationDetail: Decodable, Identifiable {
     }
 }
 
-extension RadioStationDetail: Encodable {
+extension Station: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -141,13 +141,13 @@ extension RadioStationDetail: Encodable {
     }
 }
 
-extension RadioStationDetail: Equatable {
-    public static func == (lhs: RadioStationDetail, rhs: RadioStationDetail) -> Bool {
+extension Station: Equatable {
+    public static func == (lhs: Station, rhs: Station) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension RadioStationDetail: Hashable {
+extension Station: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

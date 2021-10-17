@@ -25,7 +25,7 @@
 import Foundation
 
 struct DescribeResource: ApiResource {
-    typealias ModelType = DescribeResult
+    typealias ModelType = StationResponse
 
     var path: ApiPath {
         .describe

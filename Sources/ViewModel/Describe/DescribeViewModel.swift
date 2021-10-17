@@ -26,7 +26,7 @@ import Foundation
 
 internal class DescribeViewModel: ApiViewModel {
 
-    override func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {
+    override func fetchDetails(for station: Outline, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {
         var resource = DescribeResource()
         resource.id = station.presetId
 

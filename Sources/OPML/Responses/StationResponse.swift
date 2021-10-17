@@ -24,24 +24,7 @@
 
 import Foundation
 
-public struct BrowseLocalResult: Codable {
-    public var head: HeadResult
-    public var payload: [LocalResultBroadcastType]
-
-    private enum CodingKeys: String, CodingKey {
-        case head
-        case payload = "body"
-    }
-}
-
-public struct LocalResultBroadcastType: Codable {
-    public var element: String
-    public var text: String
-    public var stations: [RadioStation]
-
-    private enum CodingKeys: String, CodingKey {
-        case element
-        case text
-        case stations = "children"
-    }
+public struct StationResponse: Codable {
+    public var head: Head
+    public var body: [Station]
 }

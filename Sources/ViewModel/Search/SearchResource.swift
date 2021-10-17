@@ -25,7 +25,7 @@
 import Foundation
 
 struct SearchResource: ApiResource {
-    typealias ModelType = SearchResult
+    typealias ModelType = Response
 
     var path: ApiPath {
         .search

@@ -25,10 +25,20 @@
 import Foundation
 import Regex
 
-public class RadioStation: Decodable, Identifiable {
+public class Outline: Decodable, Identifiable {
+    // OPML specified attributes
     public var id: String { presetId }
-    public var title: String
-    public var subTitle: String?
+    public var text: String
+    public var subText: String?
+    public var type: String?
+
+    public var element: String?
+    public var children: Children?
+
+    private var url: String
+    public var streamUrl: URL {
+        URL(string: url)!
+    }
 
     private var coverUrlString: String?
     public var coverUrl: URL? {
@@ -37,11 +47,6 @@ public class RadioStation: Decodable, Identifiable {
             return url
         }
         return nil
-    }
-
-    private var streamUrlString: String
-    public var streamUrl: URL {
-        URL(string: streamUrlString)!
     }
 
     public var nowPlayingTitle: String?
@@ -61,14 +66,14 @@ public class RadioStation: Decodable, Identifiable {
     public var bitrate: String?
     public var item: String?
     public var formats: String?
-    public var type: String
-    public var details: RadioStationDetail?
+    public var details: Station?
 
     private enum CodingKeys: String, CodingKey {
-        case title = "text"
-        case subTitle = "subtext"
+        case text
+        case subText = "subtext"
         case coverUrlString = "image"
-        case streamUrlString = "URL"
+        case url = "URL"
+        case element
         case nowPlayingTitle = "playing"
         case nowPlayingImageUrlString = "playing_image"
         case nowPlayingId = "now_playing_id"
@@ -83,10 +88,10 @@ public class RadioStation: Decodable, Identifiable {
     }
 
     public init(title: String, subTitle: String, coverUrlString: String, streamUrlString: String, type: String = "audio", bitrate: String = "192", formats: String = "mp3", presetId: String = "s20407") {
-        self.title = title
-        self.subTitle = subTitle
+        self.text = title
+        self.subText = subTitle
         self.coverUrlString = streamUrlString
-        self.streamUrlString = streamUrlString
+        self.url = streamUrlString
         self.type = type
         self.bitrate = bitrate
         self.formats = formats
@@ -96,13 +101,16 @@ public class RadioStation: Decodable, Identifiable {
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        title = try container.decode(String.self, forKey: .title)
+        text = try container.decode(String.self, forKey: .text)
             .replacingFirst(matching: "(.+) (\\d{1,3}\\.\\d{1}) (\\(.+\\))", with: "$1")
             .replacingFirst(matching: "(.+) (\\(.+\\))", with: "$1")
 
-        subTitle = try container.decodeIfPresent(String.self, forKey: .subTitle)
+        subText = try container.decodeIfPresent(String.self, forKey: .subText)
+        url = try container.decode(String.self, forKey: .url)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
+
+        element = try container.decodeIfPresent(String.self, forKey: .element)
         coverUrlString = try container.decodeIfPresent(String.self, forKey: .coverUrlString)
-        streamUrlString = try container.decode(String.self, forKey: .streamUrlString)
         nowPlayingTitle = try container.decodeIfPresent(String.self, forKey: .nowPlayingTitle)
         nowPlayingImageUrlString = try container.decodeIfPresent(String.self, forKey: .nowPlayingImageUrlString)
         nowPlayingId = try container.decodeIfPresent(String.self, forKey: .nowPlayingId)
@@ -112,19 +120,21 @@ public class RadioStation: Decodable, Identifiable {
         bitrate = try container.decodeIfPresent(String.self, forKey: .bitrate)
         item = try container.decodeIfPresent(String.self, forKey: .item)
         formats = try container.decodeIfPresent(String.self, forKey: .formats)
-        type = try container.decode(String.self, forKey: .type)
-        details = try container.decodeIfPresent(RadioStationDetail.self, forKey: .details)
+        details = try container.decodeIfPresent(Station.self, forKey: .details)
     }
 }
 
-extension RadioStation: Encodable {
+extension Outline: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(title, forKey: .title)
-        try container.encodeIfPresent(subTitle, forKey: .subTitle)
+        try container.encode(text, forKey: .text)
+        try container.encodeIfPresent(subText, forKey: .subText)
+        try container.encode(url, forKey: .url)
+        try container.encodeIfPresent(type, forKey: .type)
+
+        try container.encodeIfPresent(element, forKey: .element)
         try container.encodeIfPresent(coverUrlString, forKey: .coverUrlString)
-        try container.encode(streamUrlString, forKey: .streamUrlString)
         try container.encodeIfPresent(nowPlayingTitle, forKey: .nowPlayingTitle)
         try container.encodeIfPresent(nowPlayingImageUrlString, forKey: .nowPlayingImageUrlString)
         try container.encodeIfPresent(nowPlayingId, forKey: .nowPlayingId)
@@ -134,19 +144,19 @@ extension RadioStation: Encodable {
         try container.encodeIfPresent(bitrate, forKey: .bitrate)
         try container.encodeIfPresent(item, forKey: .item)
         try container.encodeIfPresent(formats, forKey: .formats)
-        try container.encode(type, forKey: .type)
         try container.encodeIfPresent(details, forKey: .details)
     }
 }
 
-extension RadioStation: Equatable {
-    public static func == (lhs: RadioStation, rhs: RadioStation) -> Bool {
+extension Outline: Equatable {
+    public static func == (lhs: Outline, rhs: Outline) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension RadioStation: Hashable {
+extension Outline: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(url)
     }
 }

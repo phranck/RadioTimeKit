@@ -28,7 +28,7 @@ import XCTest
 final class RadioTimeKitTests: XCTestCase {
 
     func testVersion() throws {
-        XCTAssertEqual(RadioTime.version, "0.1.1")
+        XCTAssertEqual(RadioTime.version, "0.1.2")
     }
 
 }

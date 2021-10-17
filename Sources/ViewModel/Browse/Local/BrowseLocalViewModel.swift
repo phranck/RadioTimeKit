@@ -34,20 +34,24 @@ public class BrowseLocalViewModel: ApiViewModel {
             if let result = result {
                 self.api.stations = []
 
-                for broadcastType in result.payload {
-                    for station in broadcastType.stations {
-                        stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
+                for broadcastType in result.body {
+                    guard let children = broadcastType.children else {
+                        continue
+                    }
+
+                    for outline in children {
+                        stationDetailModel.fetchDetails(for: outline, withCompletion: { stationDetails in
                             guard let stationDetails = stationDetails else {
                                 DispatchQueue.main.async {
-                                    self.api.stations.append(station)
+                                    self.api.stations.append(outline)
                                 }
                                 return
                             }
 
-                            station.details = stationDetails.details.first
+                            outline.details = stationDetails.body.first
 
                             DispatchQueue.main.async {
-                                self.api.stations.append(station)
+                                self.api.stations.append(outline)
                             }
                         })
                     }

@@ -32,6 +32,8 @@ github "phranck/RadioTimeKit" ~> 0.1
 ## Developer Notes
 `RadioTimeKit` uses [GitFlow](http://githubflow.github.io). There are two branches, `main` and `develop`. The `develop` branch is the default branch. To provide (*changes*|*fixes*|*additions*) you just have to fork this repository and create your working branch with `develop` as base. If you’re done, just open a pull request.
 
+The API responses of TuneIn follows the [OPML Specification](http://opml.org/spec2.opml).
+
 ## Contact
 
 * :envelope: [Write me an email](mailto:hello@woodbytes.me)
