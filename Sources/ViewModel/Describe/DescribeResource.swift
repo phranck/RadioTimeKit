@@ -35,6 +35,6 @@ struct DescribeResource: ApiResource {
     var types: ApiQueryType?
     var partnerId: String?
     var serialId: String?
-    var category: ApiQueryCategory?
+    var category: ApiStationsCategory?
     var query: String?
 }

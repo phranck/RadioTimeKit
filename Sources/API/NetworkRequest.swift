@@ -24,7 +24,7 @@
 
 import Foundation
 
-protocol NetworkRequest {
+internal protocol NetworkRequest {
     associatedtype ModelType
     func decode(_ data: Data, withCompletion completion: @escaping (Result<ModelType?, RadioTimeError>) -> Void)
     func execute(withCompletion completion: @escaping (Result<ModelType?, RadioTimeError>) -> Void)
@@ -37,7 +37,7 @@ extension NetworkRequest {
         request.timeoutInterval = 10
         request.cachePolicy = .returnCacheDataElseLoad
 
-//        print(request)
+        print(request)
 
         DispatchQueue.global().async {
             let task = URLSession.shared.dataTask(with: request) { data, response, error -> Void in

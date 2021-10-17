@@ -24,7 +24,6 @@
 
 import Foundation
 import Regex
-//import Regex
 
 public class RadioStation: Decodable, Identifiable {
     public var id: String { presetId }
@@ -80,6 +79,7 @@ public class RadioStation: Decodable, Identifiable {
         case item
         case formats
         case type
+        case details
     }
 
     public init(title: String, subTitle: String, coverUrlString: String, streamUrlString: String, type: String = "audio", bitrate: String = "192", formats: String = "mp3", presetId: String = "s20407") {
@@ -113,6 +113,7 @@ public class RadioStation: Decodable, Identifiable {
         item = try container.decodeIfPresent(String.self, forKey: .item)
         formats = try container.decodeIfPresent(String.self, forKey: .formats)
         type = try container.decode(String.self, forKey: .type)
+        details = try container.decodeIfPresent(RadioStationDetail.self, forKey: .details)
     }
 }
 
@@ -134,6 +135,7 @@ extension RadioStation: Encodable {
         try container.encodeIfPresent(item, forKey: .item)
         try container.encodeIfPresent(formats, forKey: .formats)
         try container.encode(type, forKey: .type)
+        try container.encodeIfPresent(details, forKey: .details)
     }
 }
 

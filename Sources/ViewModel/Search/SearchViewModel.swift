@@ -24,24 +24,22 @@
 
 import Foundation
 
-public class SearchViewModel: ApiViewModel {
-    @Published public private(set) var isLoading: Bool = false
-
-    public func search(matching query: String) {
+internal class SearchViewModel: ApiViewModel {
+    func search(matching query: String) {
         var resource = SearchResource()
         resource.query = query
 
-        isLoading = true
+        api.isLoading = true
         performRequest(with: resource) { [weak self] result in
             if let result = result {
-                self?.stations = []
+                self?.api.stations = []
                 for station in result.stations {
                     DispatchQueue.main.async {
-                        self?.stations.append(station)
+                        self?.api.stations.append(station)
                     }
                 }
             }
-            self?.isLoading = true
+            self?.api.isLoading = true
         }
     }
 }

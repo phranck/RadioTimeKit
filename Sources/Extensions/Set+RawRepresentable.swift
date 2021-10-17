@@ -24,34 +24,42 @@
 
 import Foundation
 
-internal class BrowseTrendingViewModel: ApiViewModel {
-
-    override func fetchStations() {
-        let stationDetailModel = DescribeViewModel(api: api)
-        let resource = BrowseTrendingResource()
-
-        performRequest(with: resource) { result in
-            if let result = result {
-                self.api.stations = []
-
-                for station in result.stations {
-                    stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
-                        guard let stationDetails = stationDetails else {
-                            DispatchQueue.main.async {
-                                self.api.stations.append(station)
-                            }
-                            return
-                        }
-
-                        station.details = stationDetails.details.first
-
-                        DispatchQueue.main.async {
-                            self.api.stations.append(station)
-                        }
-                    })
-                }
-            }
+extension Array: RawRepresentable where Element: Codable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode([Element].self, from: data)
+        else {
+            return nil
         }
+        self = result
     }
 
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        return result
+    }
+}
+
+extension Set: RawRepresentable where Element: Codable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode(Set<Element>.self, from: data)
+        else {
+            return nil
+        }
+        self = result
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        return result
+    }
 }

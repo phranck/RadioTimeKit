@@ -24,25 +24,36 @@
 
 import Foundation
 
-public class ApiViewModel: ObservableObject {
-    @Published public internal(set) var stations: [RadioStation] = []
-    @Published public internal(set) var error: RadioTimeError = .none
+internal protocol ApiFetchable {
+    func fetchStations()
+    func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void)
+}
 
-    public init() {}
+public class ApiViewModel: ObservableObject, ApiFetchable {
+    public let api: RadioTime
+
+    public init(api: RadioTime) {
+        self.api = api
+    }
 
     internal func performRequest<Resource: ApiResource>(with resource: Resource, withCompletion completion: @escaping (Resource.ModelType?) -> Void) {
         let request = ApiRequest(resource: resource)
         request.execute { [weak self] result in
             switch result {
-                case let .success(result):
+                case .success(let result):
                     completion(result)
 
                 case .failure(let error):
                     print(error)
                     completion(nil)
-                    self?.error = error
+                    self?.api.error = error
                     break
             }
         }
     }
+
+    // MARK: - ApiFetchable
+
+    func fetchStations() {}
+    func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {}
 }

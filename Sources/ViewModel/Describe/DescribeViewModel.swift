@@ -24,11 +24,11 @@
 
 import Foundation
 
-public class DescribeViewModel: ApiViewModel {
+internal class DescribeViewModel: ApiViewModel {
 
-    func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {
+    override func fetchDetails(for station: RadioStation, withCompletion completion: @escaping (DescribeResource.ModelType?) -> Void) {
         var resource = DescribeResource()
-        resource.id = station.id
+        resource.id = station.presetId
 
         performRequest(with: resource) { result in
             DispatchQueue.main.async {

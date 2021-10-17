@@ -30,7 +30,7 @@ struct BrowseLocalResource: ApiResource {
     var path: ApiPath {
         .browse
     }
-    var category: ApiQueryCategory? {
+    var category: ApiStationsCategory? {
         .local
     }
 

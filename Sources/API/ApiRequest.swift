@@ -24,7 +24,7 @@
 
 import Foundation
 
-class ApiRequest<Resource: ApiResource> {
+internal class ApiRequest<Resource: ApiResource> {
     let resource: Resource
 
     init(resource: Resource) {

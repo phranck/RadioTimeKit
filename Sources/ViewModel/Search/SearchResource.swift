@@ -38,6 +38,6 @@ struct SearchResource: ApiResource {
     var id: String?
     var partnerId: String?
     var serialId: String?
-    var category: ApiQueryCategory?
+    var category: ApiStationsCategory?
     var query: String?
 }

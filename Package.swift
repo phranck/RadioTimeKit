@@ -7,23 +7,19 @@ let package = Package(
     name: "RadioTimeKit",
     platforms: [
         .iOS(.v14),
-        .macOS(.v10_15)
+        .macOS(.v11)
     ],
     products: [
         .library(name: "RadioTimeKit", targets: ["RadioTimeKit"])
     ],
     dependencies: [
         .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0"),
-        .package(name: "Realm", url: "https://github.com/realm/realm-cocoa.git", from: "10.17.0")
+        .package(url: "https://github.com/nbasham/CloudUserDefaults.git", from: "1.0.0")
     ],
     targets: [
         .target(
             name: "RadioTimeKit",
-            dependencies: [
-                "Regex",
-                .product(name: "Realm", package: "Realm"),
-                .product(name: "RealmSwift", package: "Realm")
-            ],
+            dependencies: ["Regex", "CloudUserDefaults"],
             path: "Sources"
         ),
         .testTarget(

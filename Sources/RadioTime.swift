@@ -22,13 +22,88 @@
  THE SOFTWARE.
  */
 
-import Foundation
+import CloudUserDefaults
+import SwiftUI
 
-public struct RadioTime {
+public class RadioTime: ObservableObject {
     public static let version = "0.1.1"
     public static let build = 1
 
-    public static let apiScheme = "https"
-    public static let apiHost = "opml.radiotime.com"
     public static var partnerId: String?
+    public static var favoritesStorage: RadioTimeFavoritesStorage = .userDefaults
+
+    private let cloudUserDefaults = CloudUserDefaults()
+    private static let cloudPrefix = "playable"
+
+    @Published public internal(set) var stations: [RadioStation] = []
+    @Published public internal(set) var favorites: [RadioStation] = []
+    @Published public internal(set) var error: RadioTimeError = .none
+    @Published public internal(set) var isLoading: Bool = false
+
+    @AppStorage("\(favoritesStorage == .iCloud ? "\(cloudPrefix)_" : "")favorites")
+    private var cloudfavorites: Set<RadioStation> = []
+
+    @AppStorage("\(cloudPrefix)_initialStationsCategory")
+    public static var initialStationsCategory: ApiStationsCategory = .trending
+
+    public init() {
+        cloudUserDefaults.start(prefix: RadioTime.cloudPrefix)
+        favorites = Array(cloudfavorites)
+
+        fetchStations(with: RadioTime.initialStationsCategory)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(cloudUpdate(notification:)), name: CloudUserDefaults.cloudSyncNotification, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: CloudUserDefaults.cloudSyncNotification, object: nil)
+    }
+
+    public func fetchStations(with category: ApiStationsCategory) {
+        let model: ApiViewModel
+        switch category {
+            case .local:
+                model = BrowseLocalViewModel(api: self)
+                model.fetchStations()
+            case .trending:
+                model = BrowseTrendingViewModel(api: self)
+                model.fetchStations()
+            default:
+                break
+        }
+    }
+
+    public func addToFavorites(station: RadioStation) {
+        DispatchQueue.main.async {
+            self.cloudfavorites.insert(station)
+            self.favorites.append(station)
+        }
+    }
+
+    public func removeFromFavorites(station: RadioStation) {
+        DispatchQueue.main.async {
+            self.cloudfavorites.remove(station)
+            if let index = self.favorites.firstIndex(of: station) {
+                self.favorites.remove(at: index)
+            }
+        }
+    }
+
+    // MARK: - Notifications
+
+    @objc internal func cloudUpdate(notification: NSNotification) {
+        if let dict: [String: Any] = notification.object as? [String: Any],
+           let favorites = Array<RadioStation>(rawValue: dict.description) {
+
+            print("Received Cloud Favorites: \(favorites)")
+            DispatchQueue.main.async {
+                self.favorites = favorites
+            }
+
+        }
+    }
+}
+
+public enum RadioTimeFavoritesStorage {
+    case userDefaults, iCloud
 }

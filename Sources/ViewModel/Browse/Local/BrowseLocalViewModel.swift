@@ -26,18 +26,20 @@ import Foundation
 
 public class BrowseLocalViewModel: ApiViewModel {
 
-    public func showStations() {
+    override func fetchStations() {
+        let stationDetailModel = DescribeViewModel(api: api)
         let resource = BrowseLocalResource()
-        performRequest(with: resource) { [weak self] result in
+
+        performRequest(with: resource) { result in
             if let result = result {
-                self?.stations = []
+                self.api.stations = []
+
                 for broadcastType in result.payload {
                     for station in broadcastType.stations {
-                        let stationDetailModel = DescribeViewModel()
                         stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
                             guard let stationDetails = stationDetails else {
                                 DispatchQueue.main.async {
-                                    self?.stations.append(station)
+                                    self.api.stations.append(station)
                                 }
                                 return
                             }
@@ -45,7 +47,7 @@ public class BrowseLocalViewModel: ApiViewModel {
                             station.details = stationDetails.details.first
 
                             DispatchQueue.main.async {
-                                self?.stations.append(station)
+                                self.api.stations.append(station)
                             }
                         })
                     }

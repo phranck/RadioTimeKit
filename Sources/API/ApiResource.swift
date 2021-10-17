@@ -25,14 +25,14 @@
 import Foundation
 import SwiftUI
 
-public protocol ApiResource {
+internal protocol ApiResource {
     associatedtype ModelType: Decodable
 
     var id: String? { get }
     var path: ApiPath { get }
     var serialId: String? { get }
     var types: ApiQueryType? { get }
-    var category: ApiQueryCategory? { get }
+    var category: ApiStationsCategory? { get }
     var query: String? { get }
 }
 
@@ -45,8 +45,8 @@ extension ApiResource {
 extension ApiResource {
     var url: URL {
         var components = URLComponents()
-        components.scheme = RadioTime.apiScheme
-        components.host = RadioTime.apiHost
+        components.scheme = "https"
+        components.host = "opml.radiotime.com"
         components.path = "/\(path.rawValue).ashx"
         components.queryItems = [
             URLQueryItem(name: "render", value: "json"),
@@ -85,16 +85,16 @@ extension ApiResource {
     }
 }
 
-public enum ApiQueryType: String {
+internal enum ApiQueryType: String {
     case link
     case station
 }
 
-public enum ApiQueryCategory: String {
+public enum ApiStationsCategory: String {
     case local, music, podcast, talk, sports, trending
 }
 
-public enum ApiPath: String {
+internal enum ApiPath: String {
     case browse   = "Browse"
     case search   = "Search"
     case tune     = "Tune"
