@@ -24,7 +24,13 @@
 
 import Foundation
 
-public struct StationResponse: Codable {
-    public var head: Head
-    public var body: [Station]
+struct BrowseResource: ApiResource {
+    typealias ModelType = BrowseResponse
+
+    var category: StationsCategory?
+    var id: String?
+    var types: ApiQueryType?
+    var partnerId: String?
+    var serialId: String?
+    var query: String?
 }

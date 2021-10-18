@@ -44,7 +44,7 @@ public class RadioTime: ObservableObject {
     private var cloudfavorites: Set<Outline> = []
 
     @AppStorage("\(cloudPrefix)_initialStationsCategory")
-    public static var initialStationsCategory: ApiStationsCategory = .trending
+    public static var initialStationsCategory: StationsCategory = .trending
 
     public init() {
         cloudUserDefaults.start(prefix: RadioTime.cloudPrefix)
@@ -59,7 +59,7 @@ public class RadioTime: ObservableObject {
         NotificationCenter.default.removeObserver(self, name: CloudUserDefaults.cloudSyncNotification, object: nil)
     }
 
-    public func fetchStations(with category: ApiStationsCategory) {
+    public func fetchStations(with category: StationsCategory) {
         let model: ApiViewModel
         switch category {
             case .local:

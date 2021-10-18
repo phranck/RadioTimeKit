@@ -23,35 +23,3 @@
  */
 
 import Foundation
-
-internal class BrowseTrendingViewModel: ApiViewModel {
-
-    override func fetchStations() {
-        let stationDetailModel = DescribeViewModel(api: api)
-        let resource = BrowseTrendingResource()
-
-        performRequest(with: resource) { result in
-            if let result = result {
-                self.api.stations = []
-
-                for station in result.body {
-                    stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
-                        guard let stationDetails = stationDetails else {
-                            DispatchQueue.main.async {
-                                self.api.stations.append(station)
-                            }
-                            return
-                        }
-
-                        station.details = stationDetails.body.first
-
-                        DispatchQueue.main.async {
-                            self.api.stations.append(station)
-                        }
-                    })
-                }
-            }
-        }
-    }
-
-}

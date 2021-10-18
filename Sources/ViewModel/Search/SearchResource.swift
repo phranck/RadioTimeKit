@@ -25,7 +25,7 @@
 import Foundation
 
 struct SearchResource: ApiResource {
-    typealias ModelType = Response
+    typealias ModelType = BrowseResponse
 
     var path: ApiPath {
         .search
@@ -38,6 +38,6 @@ struct SearchResource: ApiResource {
     var id: String?
     var partnerId: String?
     var serialId: String?
-    var category: ApiStationsCategory?
+    var category: StationsCategory?
     var query: String?
 }

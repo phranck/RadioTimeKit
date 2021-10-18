@@ -32,7 +32,7 @@ internal protocol ApiResource {
     var path: ApiPath { get }
     var serialId: String? { get }
     var types: ApiQueryType? { get }
-    var category: ApiStationsCategory? { get }
+    var category: StationsCategory? { get }
     var query: String? { get }
 }
 
@@ -90,14 +90,14 @@ internal enum ApiQueryType: String {
     case station
 }
 
-public enum ApiStationsCategory: String {
-    case local, music, podcast, talk, sports, trending
-}
-
 internal enum ApiPath: String {
     case browse   = "Browse"
     case search   = "Search"
     case tune     = "Tune"
     case describe = "Describe"
     case account  = "Account"
+}
+
+public enum StationsCategory: String {
+    case local, music, podcast, talk, sports, trending
 }

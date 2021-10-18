@@ -28,7 +28,8 @@ public class BrowseLocalViewModel: ApiViewModel {
 
     override func fetchStations() {
         let stationDetailModel = DescribeViewModel(api: api)
-        let resource = BrowseLocalResource()
+        var resource = BrowseResource()
+        resource.category = .local
 
         performRequest(with: resource) { result in
             if let result = result {
@@ -55,6 +56,39 @@ public class BrowseLocalViewModel: ApiViewModel {
                             }
                         })
                     }
+                }
+            }
+        }
+    }
+
+}
+
+internal class BrowseTrendingViewModel: ApiViewModel {
+
+    override func fetchStations() {
+        let stationDetailModel = DescribeViewModel(api: api)
+        var resource = BrowseResource()
+        resource.category = .trending
+
+        performRequest(with: resource) { result in
+            if let result = result {
+                self.api.stations = []
+
+                for station in result.body {
+                    stationDetailModel.fetchDetails(for: station, withCompletion: { stationDetails in
+                        guard let stationDetails = stationDetails else {
+                            DispatchQueue.main.async {
+                                self.api.stations.append(station)
+                            }
+                            return
+                        }
+
+                        station.details = stationDetails.body.first
+
+                        DispatchQueue.main.async {
+                            self.api.stations.append(station)
+                        }
+                    })
                 }
             }
         }

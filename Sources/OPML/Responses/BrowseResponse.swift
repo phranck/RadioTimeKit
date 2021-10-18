@@ -24,16 +24,9 @@
 
 import Foundation
 
-struct BrowseTrendingResource: ApiResource {
-    typealias ModelType = Response
+public typealias Children = [Outline]
 
-    var category: ApiStationsCategory? {
-        .trending
-    }
-
-    var id: String?
-    var types: ApiQueryType?
-    var partnerId: String?
-    var serialId: String?
-    var query: String?
+public struct BrowseResponse: Codable {
+    var head: Head
+    var body: Children
 }

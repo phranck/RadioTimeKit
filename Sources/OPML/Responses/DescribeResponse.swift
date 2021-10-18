@@ -24,16 +24,7 @@
 
 import Foundation
 
-struct BrowseLocalResource: ApiResource {
-    typealias ModelType = Response
-
-    var category: ApiStationsCategory? {
-        .local
-    }
-
-    var id: String?
-    var types: ApiQueryType?
-    var partnerId: String?
-    var serialId: String?
-    var query: String?
+public struct DescribeResponse: Codable {
+    public var head: Head
+    public var body: [Station]
 }
